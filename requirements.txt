@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pdf2image
+pytesseract
+pillow
+opencv-python
+numpy
+python-multipart
+
+
+#sudo apt install tesseract-ocr

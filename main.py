@@ -1,18 +1,42 @@
-from fastapi import FastAPI, File, UploadFile
+import os
+import logging
+import traceback
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from services.pdf_converter import convert_pdf_to_images
 from services.ocr_processor import extract_text_from_images
 from utils.file_utils import save_uploaded_file
-import os
 
+# Initialize FastAPI
 app = FastAPI(title="Scanned PDF Text Extractor API")
 
+# Setup Logging
+logging.basicConfig(level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(message)s")
+
+# Create Upload Directory
 UPLOAD_DIR = "uploads"
-os.makedirs(UPLOAD_DIR, exist_ok=True)  # Ensure the upload directory exists
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @app.post("/extract_text")
 async def extract_text(file: UploadFile = File(...)):
     """Extract text from a scanned PDF while preserving layout."""
-    pdf_path = save_uploaded_file(file, UPLOAD_DIR)
-    images = convert_pdf_to_images(pdf_path)
-    extracted_text = extract_text_from_images(images)
-    return {"extracted_text": extracted_text}
+    try:
+        # Save uploaded file
+        pdf_path = save_uploaded_file(file, UPLOAD_DIR)
+        logging.info(f"File saved at: {pdf_path}")
+        
+        # Convert PDF to images
+        images = convert_pdf_to_images(pdf_path)
+        logging.info(f"Converted PDF to {len(images)} images")
+
+        # Extract text using OCR
+        extracted_text = extract_text_from_images(images)
+        logging.info("OCR extraction successful")
+        
+        return {"extracted_text": extracted_text}
+
+    except Exception as e:
+        error_message = f"❌ Error processing PDF: {str(e)}"
+        logging.error(error_message)
+        logging.error(traceback.format_exc())  # Log full traceback
+
+        raise HTTPException(status_code=500, detail=error_message)
