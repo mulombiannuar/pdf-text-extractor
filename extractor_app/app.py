@@ -10,6 +10,12 @@ API_URL = "http://localhost:8000/extract_text"
 # Streamlit App Title
 st.set_page_config(page_title="Scanned PDF Text Extractor", layout="wide")
 
+# Header Section
+st.title("📜 Scanned PDF Text Extractor")
+st.subheader("Convert scanned PDFs into editable text while preserving layout.")
+
+st.divider()
+
 # Sidebar Section
 with st.sidebar:
     st.title("📂 Upload PDF")
