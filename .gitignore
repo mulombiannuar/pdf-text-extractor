@@ -4,4 +4,4 @@ __pycache__/
 .DS_Store
 uploads/
 
-extractor_api_app/error.log
+extractor_api_app/app.log

@@ -11,10 +11,10 @@ app = FastAPI(title="Scanned PDF Text Extractor API")
 
 # Setup Logging
 logging.basicConfig(
-    filename="error.log",  # Save logs to a file
+    filename="app.log",  # Log all messages to 'app.log'
     filemode="a",  # Append logs instead of overwriting
     format="%(asctime)s - %(levelname)s - %(message)s",
-    level=logging.ERROR
+    level=logging.DEBUG  # Log everything from DEBUG and above
 )
 
 # Create Upload Directory
