@@ -58,7 +58,7 @@ if uploaded_file and extract_button:
     # Column 2: Extracted Text
     with col2:
         st.subheader("📝 Extracted Text")
-        with st.spinner("Extracting text..."):
+        with st.spinner("Extracting text. Please wait..."):
             extracted_text = extract_text_from_api(pdf_path)
             st.text_area("Extracted Text", extracted_text, height=500)
             
